@@ -1,51 +1,24 @@
-from datetime import datetime
-
 from fastapi import FastAPI
-from pydantic import BaseModel
+from models import *
+from databaseHandler import DatabaseHandler
 
-from DatabaseHandler import DatabaseHandler
-
-
-class User(BaseModel):
-    username: str
-    name: str
-    family: str
-    password: str
-    phonenumber: int
+app = FastAPI()
+db = DatabaseHandler()
 
 
-class Contact(BaseModel):
-    user1: str
-    user2: str
+@app.post("/create_user")
+def create_user(user: User):
+    db.create_user(user)
+    return user
 
 
-class Chat(BaseModel):
-    id: int
-    user1: str
-    user2: str
+@app.post("/create_chat")
+def create_chat(chat: Chat):
+    db.create_chat(chat)
+    return chat
 
 
-class MsgGroup(BaseModel):
-    id: int
-    name: str
-
-
-class Message(BaseModel):
-    id: int
-    chat_id: int
-    group_id: int
-    sender: str
-    time: datetime
-    text: str
-
-
-if __name__ == "__main__":
-    app = FastAPI()
-    db = DatabaseHandler()
-
-
-    @app.post("/create_table")
-    def root(table: Table):
-        print(table)
-        db.create_table(table.name, table.attr)
-        return table
+@app.post("/create_group")
+def create_group(msg_group: MsgGroup):
+    db.create_group(msg_group)
+    return msg_group
