@@ -45,3 +45,16 @@ class DatabaseHandler:
     def create_contact(self, contact: Contact):
         query = f"insert into contacts (user1, user2) values ('{contact.user1}', '{contact.user2}')"
         self.execute_query(query)
+
+    def update_user(self, user: User):
+        query = f"update users set name = '{user.name}', family = '{user.family}', password = '{user.password}'\
+, phonenumber = {user.phonenumber} where username = '{user.username}'"
+        self.execute_query(query)
+
+    def update_group(self, msg_group: MsgGroup):
+        query = f"update msg_groups set name = '{msg_group.name}' where id = {msg_group.id}"
+        self.execute_query(query)
+
+    def update_msg(self, msg: Message):
+        query = f"update messages set text = '{msg.text}' where id = {msg.id}"
+        self.execute_query(query)

@@ -3,7 +3,7 @@ create table if not exists users(
     name varchar(20) not null,
     family varchar(20) not null,
     password varchar(20) not null,
-    phonenumber numeric(10, 0) not null,
+    phonenumber numeric(12, 0) not null,
     primary key(username),
     unique(phonenumber)
 );

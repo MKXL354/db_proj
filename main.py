@@ -34,3 +34,21 @@ def create_msg(msg: Message):
 def create_contact(contact: Contact):
     db.create_contact(contact)
     return contact
+
+
+@app.post("/update_user")
+def update_user(user: User):
+    db.update_user(user)
+    return user
+
+
+@app.post("/update_group")
+def update_group(msg_group: MsgGroup):
+    db.update_group(msg_group)
+    return msg_group
+
+
+@app.post("/update_msg")
+def update_msg(msg: Message):
+    db.update_msg(msg)
+    return msg
