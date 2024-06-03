@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -33,8 +35,8 @@ class GroupMember(BaseModel):
 
 class Message(BaseModel):
     id: int
-    chat_id: int
-    group_id: int
+    chat_id: Optional[int] = None
+    group_id: Optional[int] = None
     sender: str
     time: datetime
     text: str

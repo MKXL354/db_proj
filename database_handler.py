@@ -58,7 +58,7 @@ class DatabaseHandler:
         return self.execute_query(query, False)
 
     def create_msg(self, msg: Message):
-        query = f"insert into messages (chat_id, group_id, sender, time, text) values ('{msg.chat_id}', '{msg.group_id}'\
+        query = f"insert into messages (chat_id, group_id, sender, time, text) values ({msg.chat_id}, {msg.group_id}\
 , '{msg.sender}', '{msg.time}', '{msg.text}')"
         return self.execute_query(query, False)
 
@@ -67,7 +67,7 @@ class DatabaseHandler:
         return self.execute_query(query, False)
 
     def create_group_member(self, gm: GroupMember):
-        query = f"insert into group_members (group_id, user) values ('{gm.group_id}', '{gm.user}')"
+        query = f"insert into group_members (group_id, user) values ({gm.group_id}, '{gm.user}')"
         return self.execute_query(query, False)
 
     def update_user(self, user: User):

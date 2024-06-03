@@ -6,9 +6,11 @@ app = FastAPI()
 db = DatabaseHandler()
 
 
-# TODO: read
-# TODO: test
 # TODO: Add creator to group
+# TODO: parametrized query
+# TODO: None in database
+# TODO: more test
+# TODO: maybe user.id: int
 
 
 @app.post("/create_user")
