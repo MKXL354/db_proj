@@ -22,3 +22,15 @@ def create_chat(chat: Chat):
 def create_group(msg_group: MsgGroup):
     db.create_group(msg_group)
     return msg_group
+
+
+@app.post("/create_msg")
+def create_msg(msg: Message):
+    db.create_msg(msg)
+    return msg
+
+
+@app.post("/create_msg")
+def create_contact(contact: Contact):
+    db.create_contact(contact)
+    return contact
