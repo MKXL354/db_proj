@@ -26,6 +26,11 @@ class MsgGroup(BaseModel):
     name: str
 
 
+class GroupMember(BaseModel):
+    group_id: int
+    user: str
+
+
 class Message(BaseModel):
     id: int
     chat_id: int

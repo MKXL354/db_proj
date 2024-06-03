@@ -32,6 +32,14 @@ create table if not exists msg_groups(
     primary key(id)
 );
 
+create table if not exists group_members(
+    group_id int,
+    user varchar(20),
+    primary key (group_id, user),
+    foreign key (group_id) references msg_groups(id),
+    foreign key (user) references users(username)
+);
+
 create table if not exists messages(
     id int auto_increment,
     chat_id int,

@@ -6,10 +6,9 @@ app = FastAPI()
 db = DatabaseHandler()
 
 
-# TODO: correct return for methods (maybe use exceptions)
-# TODO: update?, read
+# TODO: read
 # TODO: test
-# TODO: user1, user2 in chats table can be user2, user1 (duplicate chat)
+# TODO: Add creator to group
 
 
 @app.post("/create_user")
@@ -35,6 +34,11 @@ def create_msg(msg: Message):
 @app.post("/create_contact")
 def create_contact(contact: Contact):
     return db.create_contact(contact)
+
+
+@app.post("/create_group_member")
+def create_group_member(gm: GroupMember):
+    return db.create_group_member(gm)
 
 
 @app.put("/update_user")
@@ -67,11 +71,51 @@ def delete_group(id: int):
     return db.delete_group(id)
 
 
+@app.delete("/delete_group_member/{group_id}/{user}")
+def delete_group_member(group_id: int, user: str):
+    return db.delete_group_member(group_id, user)
+
+
 @app.delete("/delete_msg/{id}")
 def delete_msg(id: int):
     return db.delete_msg(id)
 
 
-@app.delete("/delete_msg/{user1}/{user2}")
+@app.delete("/delete_contact/{user1}/{user2}")
 def delete_contact(user1: str, user2: str):
     return db.delete_contact(user1, user2)
+
+
+@app.get("/read_user/{username}")
+def read_user(username: str):
+    return db.read_user(username)
+
+
+@app.get("/read_user_contacts/{username}")
+def read_user_contacts(username: str):
+    return db.read_user_contacts(username)
+
+
+@app.get("/read_user_chats/{username}")
+def read_user_chats(username: str):
+    return db.read_user_chats(username)
+
+
+@app.get("/read_group/{name}")
+def read_group(name: str):
+    return db.read_group(name)
+
+
+@app.get("/read_group_members/{name}")
+def read_group_members(name: str):
+    return db.read_group_members(name)
+
+
+@app.get("/read_group_messages/{id}")
+def read_group_messages(id: int):
+    return db.read_group_messages(id)
+
+
+@app.get("/read_chat_messages/{id}")
+def read_chat_messages(id: int):
+    return db.read_chat_messages(id)

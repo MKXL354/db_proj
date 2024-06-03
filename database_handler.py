@@ -36,8 +36,7 @@ class DatabaseHandler:
             if not is_select:
                 return "success"
             else:
-                # select return using query__res
-                pass
+                return query_res
 
     def create_user(self, user: User):
         query = f"insert into users (username, name, family, password, phonenumber) values ('{user.username}'\
@@ -45,7 +44,13 @@ class DatabaseHandler:
         return self.execute_query(query, False)
 
     def create_chat(self, chat: Chat):
-        query = f"insert into chats (user1, user2) values ('{chat.user1}', '{chat.user2}')"
+        if chat.user1 > chat.user2:
+            user1 = chat.user1
+            user2 = chat.user2
+        else:
+            user1 = chat.user2
+            user2 = chat.user1
+        query = f"insert into chats (user1, user2) values ('{user1}', '{user2}')"
         return self.execute_query(query, False)
 
     def create_group(self, msg_group: MsgGroup):
@@ -59,6 +64,10 @@ class DatabaseHandler:
 
     def create_contact(self, contact: Contact):
         query = f"insert into contacts (user1, user2) values ('{contact.user1}', '{contact.user2}')"
+        return self.execute_query(query, False)
+
+    def create_group_member(self, gm: GroupMember):
+        query = f"insert into group_members (group_id, user) values ('{gm.group_id}', '{gm.user}')"
         return self.execute_query(query, False)
 
     def update_user(self, user: User):
@@ -86,6 +95,10 @@ class DatabaseHandler:
         query = f"delete from msg_groups where id = {id}"
         return self.execute_query(query, False)
 
+    def delete_group_member(self, group_id: int, user: str):
+        query = f"delete from group_members where group_id = {group_id} and user = '{user}'"
+        return self.execute_query(query, False)
+
     def delete_msg(self, id: int):
         query = f"delete from messages where id = {id}"
         return self.execute_query(query, False)
@@ -93,3 +106,31 @@ class DatabaseHandler:
     def delete_contact(self, user1: str, user2: str):
         query = f"delete from contacts where user1 = '{user1}' and user2 = '{user2}'"
         return self.execute_query(query, False)
+
+    def read_user(self, username: str):
+        query = f"select * from users where username = '{username}'"
+        return self.execute_query(query, True)
+
+    def read_user_contacts(self, username: str):
+        query = f"select * from contacts where user1 = '{username}'"
+        return self.execute_query(query, True)
+
+    def read_user_chats(self, username: str):
+        query = f"select * from chats where user1 = '{username}' or user2 = '{username}'"
+        return self.execute_query(query, True)
+
+    def read_group(self, name: str):
+        query = f"select * from msg_groups where name = '{name}'"
+        return self.execute_query(query, True)
+
+    def read_group_members(self, name: str):
+        query = f"select * from group_members join msg_groups where name = '{name}'"
+        return self.execute_query(query, True)
+
+    def read_group_messages(self, id: int):
+        query = f"select * from messages where group_id = {id}"
+        return self.execute_query(query, True)
+
+    def read_chat_messages(self, id: int):
+        query = f"select * from messages where chat_id = {id}"
+        return self.execute_query(query, True)
