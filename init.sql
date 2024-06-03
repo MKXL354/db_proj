@@ -21,6 +21,7 @@ create table if not exists chats(
     user1 varchar(20) not null,
     user2 varchar(20) not null,
     primary key(id),
+    unique(user1, user2),
     foreign key (user1) references users(username),
     foreign key (user2) references users(username)
 );
