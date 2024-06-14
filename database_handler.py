@@ -58,7 +58,9 @@ class DatabaseHandler:
         return self.execute_query(query, False)
 
     def create_msg(self, msg: Message):
-        query = f"insert into messages (chat_id, group_id, sender, time, text) values ({msg.chat_id}, {msg.group_id}\
+        chat_id = 'NULL' if msg.chat_id is None else msg.chat_id
+        group_id = 'NULL' if msg.group_id is None else msg.group_id
+        query = f"insert into messages (chat_id, group_id, sender, time, text) values ({chat_id}, {group_id}\
 , '{msg.sender}', '{msg.time}', '{msg.text}')"
         return self.execute_query(query, False)
 
@@ -117,6 +119,10 @@ class DatabaseHandler:
 
     def read_user_chats(self, username: str):
         query = f"select * from chats where user1 = '{username}' or user2 = '{username}'"
+        return self.execute_query(query, True)
+
+    def read_user_groups(self, username: str):
+        query = f"select group_id, name from group_members natural join msg_groups where user = '{username}'"
         return self.execute_query(query, True)
 
     def read_group(self, name: str):

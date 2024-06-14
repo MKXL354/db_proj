@@ -50,6 +50,6 @@ create table if not exists messages(
     primary key(id),
     foreign key (chat_id) references chats(id) on delete cascade,
     foreign key (group_id) references msg_groups(id) on delete cascade,
-    foreign key (sender) references users(username) on delete cascade
-#     constraint belongs check((group_id is not null and chat_id is null) or (group_id is null and chat_id is not null))
+    foreign key (sender) references users(username) on delete cascade,
+    constraint belongs check((group_id is not null and chat_id is null) or (group_id is null and chat_id is not null))
 );

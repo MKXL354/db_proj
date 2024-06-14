@@ -41,10 +41,10 @@ class InitialData:
 
     def create_message(self, chat, msg_group, user: User, time: datetime,
                        text: str):
-        if chat == 0:
-            msg = Message(id=0, chat_id=0, group_id=msg_group.id, sender=user.username, time=time, text=text)
+        if chat is None:
+            msg = Message(id=0, chat_id=None, group_id=msg_group.id, sender=user.username, time=time, text=text)
         else:
-            msg = Message(id=0, chat_id=chat.id, group_id=0, sender=user.username, time=time, text=text)
+            msg = Message(id=0, chat_id=chat.id, group_id=None, sender=user.username, time=time, text=text)
         self.db.create_msg(msg)
 
 
@@ -56,10 +56,10 @@ if __name__ == "__main__":
     for i in range(2):
         for j in range(3):
             init.add_to_group(groups[i], users[3 * i + j])
-            # init.create_message(0, groups[i], users[i], datetime.now(), f"from u{i} to g{i} added u{3 * i + j}")
+            init.create_message(None, groups[i], users[i], datetime.now(), f"from u{i} to g{i} added u{3 * i + j}")
     for i in range(2):
         for j in range(4):
             init.add_to_contacts(users[5 * i], users[5 * i + j + 1])
     for i in range(2):
-        # init.create_message(chats[i], 0, users[i], datetime.now(), f"from u{i} to u{i+1}")
+        init.create_message(chats[i], None, users[i], datetime.now(), f"from u{i} to u{i+1}")
         pass

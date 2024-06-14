@@ -6,11 +6,8 @@ app = FastAPI()
 db = DatabaseHandler()
 
 
-# TODO: Add creator to group
-# TODO: parametrized query
-# TODO: None in database
 # TODO: more test
-# TODO: maybe user.id: int
+# TODO: maybe write a client later
 
 
 @app.post("/create_user")
@@ -101,6 +98,11 @@ def read_user_contacts(username: str):
 @app.get("/read_user_chats/{username}")
 def read_user_chats(username: str):
     return db.read_user_chats(username)
+
+
+@app.get("/read_user_groups/{username}")
+def read_user_groups(username: str):
+    return db.read_user_groups(username)
 
 
 @app.get("/read_group/{name}")
