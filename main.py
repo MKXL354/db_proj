@@ -6,7 +6,6 @@ app = FastAPI()
 db = DatabaseHandler()
 
 
-# TODO: more test
 # TODO: maybe write a client later
 
 
@@ -123,3 +122,8 @@ def read_group_messages(id: int):
 @app.get("/read_chat_messages/{id}")
 def read_chat_messages(id: int):
     return db.read_chat_messages(id)
+
+
+@app.get("/login/{username}/{password}")
+def login(username: str, password: str):
+    return db.login(username, password)

@@ -17,20 +17,20 @@ class DatabaseHandler:
         res: bool
         query_res = 0
         db = self.con_pool.get_connection()
-        cursor = db.cursor()
+        cursor = db.cursor(dictionary=True)
         try:
             cursor.execute(query)
             if is_select:
                 query_res = cursor.fetchall()
-            res = True
+            is_successful = True
         except mysql.connector.Error as e:
             print(e)
-            res = False
+            is_successful = False
         db.commit()
         cursor.close()
         db.close()
 
-        if not res:
+        if not is_successful:
             return "failed"
         else:
             if not is_select:
@@ -39,8 +39,8 @@ class DatabaseHandler:
                 return query_res
 
     def create_user(self, user: User):
-        query = f"insert into users (username, name, family, password, phonenumber) values ('{user.username}'\
-, '{user.name}', '{user.family}', '{user.password}', {user.phonenumber})"
+        query = f"insert into users (username, name, family, password, phone_number) values ('{user.username}'\
+, '{user.name}', '{user.family}', '{user.password}', '{user.phone_number}')"
         return self.execute_query(query, False)
 
     def create_chat(self, chat: Chat):
@@ -74,7 +74,7 @@ class DatabaseHandler:
 
     def update_user(self, user: User):
         query = f"update users set name = '{user.name}', family = '{user.family}', password = '{user.password}'\
-, phonenumber = {user.phonenumber} where username = '{user.username}'"
+, phone_number = '{user.phone_number}' where username = '{user.username}'"
         return self.execute_query(query, False)
 
     def update_group(self, msg_group: MsgGroup):
@@ -122,7 +122,7 @@ class DatabaseHandler:
         return self.execute_query(query, True)
 
     def read_user_groups(self, username: str):
-        query = f"select group_id, name from group_members natural join msg_groups where user = '{username}'"
+        query = f"select group_id, name from group_members join msg_groups on group_id = id where user = '{username}'"
         return self.execute_query(query, True)
 
     def read_group(self, name: str):
@@ -140,3 +140,13 @@ class DatabaseHandler:
     def read_chat_messages(self, id: int):
         query = f"select * from messages where chat_id = {id}"
         return self.execute_query(query, True)
+
+    def login(self, username: str, password: str):
+        query = f"select * from users where username = '{username}' and password = '{password}'"
+        res = self.execute_query(query, True)
+        if len(res) == 0:
+            return 'No user found'
+        else:
+            query = f"insert into login_dates (user, time) values ('{username}', '{datetime.now()}')"
+            self.execute_query(query, False)
+            return res

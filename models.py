@@ -9,7 +9,7 @@ class User(BaseModel):
     name: str
     family: str
     password: str
-    phonenumber: int
+    phone_number: str
 
 
 class Contact(BaseModel):
